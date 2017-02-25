@@ -30,6 +30,7 @@ int TreeHight(struct TreeNode *);
 int main()
 {
 	string a,b;
+
     while(cin>>a>>b)
     {
         struct TreeNode *tree=create_tree(a, b);
@@ -78,7 +79,7 @@ bool isBalanced(struct TreeNode *root)
 }
 /*submission*/
 
-TreeNode *create_tree(string a,string b)
+struct TreeNode *create_tree(string a,string b)
 {
     if(a.length()<=0)
     {
