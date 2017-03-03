@@ -10,9 +10,6 @@ struct TreeNode
  };
 
 //输入先序遍历和中序遍历字符串构造二叉树
-/*例: 1. 平衡二叉树，先序“abdecf”， 中序“dbeafc”；
-      2. 非平衡二叉树，先序“abdec”，中序“edbac”.
-*/
 struct TreeNode *create_tree(string,string);
 
 //后序遍历输出二叉树
@@ -21,8 +18,11 @@ struct TreeNode *create_tree(string,string);
 //销毁二叉树
 void destroy_tree(struct TreeNode *);
 
-//是否时平衡二叉树
-bool isBalanced(struct TreeNode *);
+//是否是平衡二叉树
+bool isValidBST(struct TreeNode* root);
+
+//中序遍历
+void middle(struct TreeNode* root, int tree[], int &count);
 
 //二叉树高度（叶子结点高度算 1）
 int TreeHight(struct TreeNode *);
@@ -35,13 +35,12 @@ int main()
     {
         struct TreeNode *tree=create_tree(a, b);
 
-        printf("%d\n", isBalanced(tree));
+        printf("%d\n", isValidBST(tree));
 
         destroy_tree(tree);
     }
 }
 
-/*submission*/
 int TreeHight(struct TreeNode *root)
 {
 	if(NULL == root)
@@ -55,27 +54,38 @@ int TreeHight(struct TreeNode *root)
 	return (hight_left>hight_right)?(hight_left+1):(hight_right+1);
 }
 
-bool isBalanced(struct TreeNode *root)
+/*submission*/
+void middle(struct TreeNode* root, int tree[], int &count)
 {
-	if(NULL == root)
-	{
-		return true;
-	}
+    if(NULL == root)
+    {
+        return;
+    }
 
-	bool is_left_balanced=isBalanced(root->left);
-	bool is_right_balanced=isBalanced(root->right);
-	int hight_left;
-	int hight_right;
+    middle(root->left, tree, count);
+    tree[count++]=root->val;
+    middle(root->right, tree, count);
+}
 
-	if(is_left_balanced && is_right_balanced)
-	{
-		hight_left=TreeHight(root->left);
-		hight_right=TreeHight(root->right);
+bool isValidBST(struct TreeNode* root)
+{
+	int tree[10000];
+    int count=0;
 
-		return (((hight_left>hight_right)?(hight_left - hight_right):(hight_right - hight_left))>1)?false:true;
-	}
+    middle(root, tree, count);
 
-	return false;
+    int res=true;
+
+    for(int i=0;i<count-1;i++)
+    {
+        if(tree[i]>=tree[i+1])
+        {
+            res=false;
+            break;
+        }
+    }
+
+    return res;
 }
 /*submission*/
 
