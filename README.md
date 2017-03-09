@@ -1,3 +1,3 @@
 # LeetCode
 ## Solutions to LeetCode
-### just record exercise
+### just record exercises
